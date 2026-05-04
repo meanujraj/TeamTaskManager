@@ -40,6 +40,9 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
+// Root Route
+app.get('/', (req, res) => res.json({ message: 'Team Task Manager API Running', status: 'ok' }));
+
 // Health Check
 app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 
@@ -63,7 +66,7 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/taskmanage
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('MongoDB Connected');
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
   })
   .catch(err => {
     console.error('DB Connection Error:', err.message);
