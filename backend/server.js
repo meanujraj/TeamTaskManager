@@ -12,8 +12,25 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// CORS — allow frontend in dev and production
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow all in dev — restrict in production if needed
+    }
+  },
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(morgan('dev'));
 
@@ -24,7 +41,12 @@ app.use('/api/tasks', taskRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
 // Health Check
-app.get('/health', (req, res) => res.json({ status: 'ok' }));
+app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
+
+// 404 Handler
+app.use((req, res) => {
+  res.status(404).json({ message: `Route ${req.method} ${req.url} not found` });
+});
 
 // Global Error Handler
 app.use((err, req, res, next) => {
@@ -44,6 +66,6 @@ mongoose.connect(MONGO_URI)
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch(err => {
-    console.error('DB Connection Error:', err);
+    console.error('DB Connection Error:', err.message);
     process.exit(1);
   });

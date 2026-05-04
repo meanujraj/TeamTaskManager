@@ -50,7 +50,10 @@ Team Task Manager provides a clean, focused interface for:
 | **Project Management** | Create projects, add/remove team members |
 | **Task CRUD** | Create, read, update, delete tasks with priority & status |
 | **Dashboard Analytics** | Real-time cards: total, completed, in-progress, overdue |
+| **Dark Mode** | System-aware theme toggle, persisted in localStorage |
+| **Input Validation** | Server-side validation for all inputs (email, password, enums) |
 | **Responsive UI** | Tailwind CSS — works on desktop, tablet, and mobile |
+
 
 ---
 
