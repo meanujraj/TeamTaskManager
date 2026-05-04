@@ -2,6 +2,9 @@
 
 > A lightweight, production-ready task management platform built for distributed teams. Inspired by Trello/Asana — without the complexity.
 
+**🌐 Live App:** [teamtaskmanager.up.railway.app](https://teamtaskmanager-production-97aa.up.railway.app/)
+
+
 [![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6+-47A248?logo=mongodb&logoColor=white)](https://mongodb.com)
