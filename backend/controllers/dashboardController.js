@@ -9,9 +9,9 @@ exports.getStats = async (req, res) => {
     
     const stats = {
       totalTasks: tasks.length,
-      completed: tasks.filter(t => t.status === 'done').length,
-      pending: tasks.filter(t => t.status === 'in-progress').length,
-      overdue: tasks.filter(t => t.status !== 'done' && t.dueDate && new Date(t.dueDate) < new Date()).length
+      completed: tasks.filter(t => t.status === 'completed').length,
+      pending: tasks.filter(t => ['in-progress', 'submitted', 'todo'].includes(t.status)).length,
+      overdue: tasks.filter(t => t.status !== 'completed' && t.dueDate && new Date(t.dueDate) < new Date()).length
     };
 
     res.json(stats);

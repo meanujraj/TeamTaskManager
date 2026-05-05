@@ -6,6 +6,10 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, enum: ['admin', 'member'], default: 'member' },
+  uniqueAdminId: { type: String, unique: true, sparse: true },
+  currentTeamId: { type: String, unique: true, sparse: true },
+  connectedAdmin: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  assignedRole: { type: String },
   resetToken: { type: String },
   resetTokenExpiry: { type: Date }
 }, { timestamps: true });

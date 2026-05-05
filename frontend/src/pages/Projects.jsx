@@ -2,23 +2,26 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { FolderKanban, Plus, MoreVertical, Users, Calendar, ArrowUpRight } from 'lucide-react';
 import api from '../api/axios';
+import ProjectModal from '../components/ProjectModal';
 
 const Projects = () => {
   const { user } = useAuth();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const fetchProjects = async () => {
+    try {
+      const res = await api.get('/projects');
+      setProjects(res.data);
+    } catch (err) {
+      console.error('Failed to fetch projects');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const res = await api.get('/projects');
-        setProjects(res.data);
-      } catch (err) {
-        console.error('Failed to fetch projects');
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchProjects();
   }, []);
 
@@ -39,11 +42,23 @@ const Projects = () => {
           <p className="text-gray-500 dark:text-gray-400 mt-1">Manage and organize your team projects.</p>
         </div>
         {user?.role === 'admin' && (
-          <button className="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl font-medium transition-all duration-200 flex items-center gap-2 shadow-lg shadow-indigo-600/25 dark:shadow-indigo-600/15 self-start">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl font-medium transition-all duration-200 flex items-center gap-2 shadow-lg shadow-indigo-600/25 dark:shadow-indigo-600/15 self-start"
+          >
             <Plus className="w-5 h-5" /> New Project
           </button>
         )}
       </header>
+
+      <ProjectModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onProjectCreated={() => {
+          setIsModalOpen(false);
+          fetchProjects();
+        }} 
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {projects.map((project) => (

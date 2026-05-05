@@ -21,7 +21,7 @@ const Signup = () => {
       await signup(name, email, password, role);
       navigate('/dashboard');
     } catch (err) {
-      setError('Registration failed. Try again.');
+      setError(err.response?.data?.message || 'Registration failed. Try again.');
     } finally {
       setLoading(false);
     }
